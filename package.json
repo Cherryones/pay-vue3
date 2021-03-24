@@ -1,0 +1,55 @@
+{
+  "name": "qrcode-pay",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service build --mode serve",
+    "dev": "vue-cli-service serve --mode dev",
+    "test": "vue-cli-service build --mode test",
+    "verify": "vue-cli-service build --mode verify",
+    "ywuat": "vue-cli-service build --mode ywuat",
+    "build": "vue-cli-service build --mode prod",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "alife-logger": "^1.8.25",
+    "amfe-flexible": "^2.2.1",
+    "axios": "^0.19.2",
+    "core-js": "^3.6.4",
+    "cube-ui": "^1.12.36",
+    "vue": "^2.6.11",
+    "vue-clipboard2": "^0.3.1",
+    "vue-cookies": "^1.7.0",
+    "vue-router": "^3.1.6"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^4.2.0",
+    "@vue/cli-plugin-eslint": "^4.2.0",
+    "@vue/cli-service": "^4.2.0",
+    "babel-eslint": "^10.0.3",
+    "compression-webpack-plugin": "^3.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^6.1.2",
+    "postcss-px2rem": "^0.3.0",
+    "stylus": "^0.54.7",
+    "stylus-loader": "^3.0.2",
+    "vue-cli-plugin-cube-ui": "^0.2.5",
+    "vue-template-compiler": "^2.6.11",
+    "webpack-bundle-analyzer": "^3.6.1",
+    "webpack-chain": "^6.4.0",
+    "webpack-cli": "^3.3.11"
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 11",
+    "Android >= 4.0",
+    "iOS >= 8"
+  ],
+  "transformModules": {
+    "cube-ui": {
+      "transform": "cube-ui/src/modules/${member}",
+      "kebabCase": true
+    }
+  }
+}

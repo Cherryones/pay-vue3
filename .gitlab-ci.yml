@@ -1,0 +1,84 @@
+image: 172.20.5.53/library/node
+
+stages:
+  - build
+  - test
+  - deploy
+ 
+.dedicated-runner:
+  retry:
+    max: 1
+    when:
+      - unknown_failure
+      - api_failure
+      - runner_system_failure   
+  only:
+    #- branch_exp
+    - api
+  tags:
+    - frontend
+
+# Build test environment code
+test:
+  stage: build
+  extends:
+    - .dedicated-runner
+  script: python /opt/scripts/build_shell/apps/app.py test test
+
+.only_master:
+  retry:
+    max: 1
+    when:
+      - unknown_failure
+      - api_failure
+      - runner_system_failure   
+  only:
+    - master
+  tags:
+    - frontend
+
+
+# Build verify environment code	
+verify:
+  stage: build
+  extends:
+    - .only_master
+  script:  python /opt/scripts/build_shell/apps/app.py verify verify
+  #when: manual
+
+uat:
+  stage: build
+  extends:
+    - .only_master
+  script:  python /opt/scripts/build_shell/apps/app.py ywuat ywuat
+  #when: manual
+
+# Build prod environment code
+master:
+  stage: build
+  extends:
+    - .only_master
+  script:  python /opt/scripts/build_shell/apps/app.py build prod
+  only:
+    - master
+  #when: manual
+  tags:
+    - frontend
+
+# Deploy code to the development environment
+deploy-nginx:
+  stage: deploy
+  extends: .dedicated-runner
+  variables:
+    REMOTE_SVR_IP: 172.20.21.110
+    REMOTE_DIR:  /usr/local/nginx/test
+  script: python /opt/scripts/build_shell/apps/deploy.py serve $REMOTE_SVR_IP $REMOTE_DIR
+
+# Deploy code to the development environment
+deploy-tengine:
+  stage: deploy
+  extends: .dedicated-runner
+  variables:
+    REMOTE_SVR_IP: 172.20.21.110
+    REMOTE_DIR:  /usr/local/tengine/test
+  script: python /opt/scripts/build_shell/apps/deploy.py serve $REMOTE_SVR_IP $REMOTE_DIR
